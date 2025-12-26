@@ -1,42 +1,47 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/pages/PageViews/one_page.dart';
 
-class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+// ignore: must_be_immutable
+class HomePage extends StatefulWidget {
 
+  @override
+  State<HomePage> createState() => _HomePageState();} 
+
+  class _HomePageState extends State<HomePage> {  
+    PageController _pageController = PageController();
+
+  int indexBottomNavegigationBar = 0;
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('AppBar'),
+        centerTitle: true,
+        backgroundColor: Colors.green,
+        title: Text('AppBar', style: TextStyle(color: Colors.white),),
+        
       ),
-      body: Column(
+      body: PageView(
+        controller: _pageController,
         children: [
-          Container(
-      height: 200,
-      width: MediaQuery.of(context).size.width,
-      decoration: BoxDecoration(
-        color: Colors.blue,       
+        OnePage(),
+         
+        Container(color: Colors.red),
+        Container(color: Colors.yellow),
+      ],
       ),
-      child: Center(child: Text('Olá Mundo', style: TextStyle(color: Colors.white, fontSize: 30))),
-      ),
-        Text ('Olá text'), 
-        Row(children: [
-          Container(
-            color: Colors.red,
-            height: 100,
-            width: 200,
-            child: Center(child: Text('Container 1'))),
-          Container(
-            color: Colors.purple,        
-            height: 100,
-            width: 200,
-            child: Center(child: Text('Container 2'))),
-        ],)  
-        ],
-      ),
-      bottomNavigationBar: BottomNavigationBar(items: [
+        bottomNavigationBar: BottomNavigationBar(
+        currentIndex: indexBottomNavegigationBar,  
+          onTap: (int index){
+            setState(() {
+              indexBottomNavegigationBar = index;
+            });
+            _pageController.animateToPage(index, duration: Duration(milliseconds: 500), curve: Curves.ease);
+          },
+        items: [
         BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
         BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
+        BottomNavigationBarItem(icon: Icon(Icons.settings), label: 'Settings'),
       ],) ,
       );
   }
